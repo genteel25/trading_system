@@ -32,8 +32,8 @@ class MarketOverviewWidget extends StatelessWidget {
               const StackedImage(),
               4.w.widthBox,
               AppText(
-                // text: "BTC/USDT",
-                text: "????/????",
+                text: "BTC/USDT",
+                // text: "????/????",
                 style: TextStyles.defaultStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,

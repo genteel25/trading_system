@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:web_socket_client/web_socket_client.dart';
-
 import '../../model/trade_info.dart';
-
+import '../../ui/app_strings.dart';
 part 'trade_info_state.dart';
 part 'trade_info_cubit.freezed.dart';
 
@@ -22,10 +20,10 @@ class TradeInfoCubit extends Cubit<TradeInfoState> {
   onConnect() {
     emit(const TradeInfoState.loading());
     webSocket = WebSocketClient(
-      url: "wss://stream.binance.com:9443/ws/btcusdt@ticker",
+      url: "${AppStrings.BASE_URL}@ticker",
       eventHandler: (data) => onMessageReceived(data),
       onConnect: () {
-        log("onconnect");
+        debugPrint("Connected");
       },
     );
   }
@@ -33,10 +31,7 @@ class TradeInfoCubit extends Cubit<TradeInfoState> {
   onMessageReceived(dynamic newData) {
     emit(const TradeInfoState.loading());
     final data = jsonDecode(newData.toString()) as Map<String, dynamic>;
-
-    // log("price data: $data");
     final priceList = TradeInfoData.fromJson(data);
-    // log("price list: ${priceList.priceChangePercent}");
     emit(TradeInfoState.success(
         tradeInfo: priceList,
         previousPrice: previousPrice,

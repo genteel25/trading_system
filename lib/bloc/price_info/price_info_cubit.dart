@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:k_chart/entity/k_line_entity.dart';
 import 'package:trader/bloc/trade_info/trade_info_cubit.dart';
+
+import '../../ui/app_strings.dart';
 
 part 'price_info_state.dart';
 part 'price_info_cubit.freezed.dart';
@@ -16,12 +18,17 @@ class PriceInfoCubit extends Cubit<PriceInfoState> {
   List<KLineEntity> entities = [];
 
   onConnect({String? symbol}) {
+    // entities.clear();
     emit(const PriceInfoState.loading());
     webSocket = WebSocketClient(
-      url: "wss://stream.binance.com:9443/ws/btcusdt@kline_${symbol ?? "1m"}",
+      url: "${AppStrings.BASE_URL}@kline_${switch (symbol) {
+            "1D" => "1d",
+            "1W" => "1w",
+            _ => symbol,
+          } ?? "1m"}",
       eventHandler: (data) => onMessageReceived(data),
       onConnect: () {
-        log("onconnect");
+        debugPrint("Connected");
       },
     );
   }

@@ -408,7 +408,7 @@ class _TradeModalWidgetState extends State<TradeModalWidget>
                     ),
                   ),
                   child: AppText(
-                      text: '${currentTabIndex == 0 ? "Buy" : "Sell"} ???'),
+                      text: currentTabIndex == 0 ? "Buy BTC" : "Sell BTC"),
                 ),
               ),
               12.h.heightBox,

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:trader/model/orderbook.dart';
+import 'package:trader/ui/app_strings.dart';
 
 import '../trade_info/trade_info_cubit.dart';
 
@@ -19,11 +19,10 @@ class OrderbookCubit extends Cubit<OrderbookState> {
   onConnect({String? symbol}) {
     emit(const OrderbookState.loading());
     webSocket = WebSocketClient(
-      url:
-          "wss://stream.binance.com:9443/ws/btcusdt@depth${symbol ?? "5"}@1000ms",
+      url: "${AppStrings.BASE_URL}@depth${symbol ?? "5"}@1000ms",
       eventHandler: (data) => onMessageReceived(data),
       onConnect: () {
-        // log("onconnect");
+        debugPrint("Connected");
       },
     );
   }
